@@ -76,13 +76,13 @@ func TestAdapter(t *testing.T) {
 	_, _ = e.AddGroupingPolicy("alice", "data2_admin")
 
 	// Test Save Policy
-	// policys, _ := e.GetPolicy()
-	// groups, _ := e.GetGroupingPolicy()
-	// expectedPolicies := len(policys) + len(groups)
-	// _ = e.SavePolicy()
-	// if len(a.policy) != expectedPolicies {
-	// 	t.Errorf("expected %d policies, got %d", expectedPolicies, len(a.policy))
-	// }
+	policys, _ := e.GetPolicy()
+	groups, _ := e.GetGroupingPolicy()
+	expectedPolicies := len(policys) + len(groups)
+	_ = e.SavePolicy()
+	if len(a.policy) != expectedPolicies {
+		t.Errorf("expected %d policies, got %d", expectedPolicies, len(a.policy))
+	}
 
 	// Not implemented methods
 	// 添加策略

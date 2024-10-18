@@ -47,7 +47,7 @@ type Adapter struct {
 
 // NewAdapter is the constructor for Adapter.
 // source是当url不存在时的默认值
-func NewAdapter(driver driver.IDriver, url string, source []byte, force bool) persist.Adapter {
+func NewAdapter(driver driver.IDriver, url string, source []byte, force bool) *Adapter {
 	a := Adapter{
 		dataurl: url,
 		driver:  driver,
@@ -268,5 +268,42 @@ func (a *Adapter) RemoveFilteredPolicy(sec string, ptype string, fieldIndex int,
 	}
 
 	a.policy = newPolicy
+	return a.saveToBuffer()
+}
+
+//	type BatchAdapter interface {
+//		Adapter
+//		// AddPolicies adds policy rules to the storage.
+//		// This is part of the Auto-Save feature.
+//		AddPolicies(sec string, ptype string, rules [][]string) error
+//		// RemovePolicies removes policy rules from the storage.
+//		// This is part of the Auto-Save feature.
+//		RemovePolicies(sec string, ptype string, rules [][]string) error
+//	}
+func (a *Adapter) AddPolicies(sec string, ptype string, rules [][]string) error {
+	for _, rule := range rules {
+		line := savePolicyLine(ptype, rule)
+		a.policy = append(a.policy, line)
+	}
+	return a.saveToBuffer()
+}
+
+// RemovePolicies removes policy rules from the storage.
+// This is part of the Auto-Save feature.
+func (a *Adapter) RemovePolicies(sec string, ptype string, rules [][]string) error {
+	for _, rule := range rules {
+		for i, line := range a.policy {
+			if line.PType == ptype &&
+				line.V0 == rule[0] &&
+				line.V1 == rule[1] &&
+				line.V2 == rule[2] &&
+				line.V3 == rule[3] &&
+				line.V4 == rule[4] &&
+				line.V5 == rule[5] {
+				a.policy = append(a.policy[:i], a.policy[i+1:]...)
+				break
+			}
+		}
+	}
 	return a.saveToBuffer()
 }
