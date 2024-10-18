@@ -6,7 +6,7 @@ require (
 	github.com/casbin/casbin/v2 v2.100.0
 	github.com/joho/godotenv v1.5.1
 	github.com/wwqdrh/gokit/logger v0.0.0-20240610005355-fe9ce6600c3a
-	github.com/wwqdrh/webdav v0.0.1
+	github.com/wwqdrh/webdav v0.0.0-20241018023559-9350f535a3e5
 )
 
 require (
@@ -24,4 +24,4 @@ require (
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 )
 
-replace github.com/wwqdrh/webdav v0.0.1 => ../
+// replace github.com/wwqdrh/webdav v0.0.1 => ../

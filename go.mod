@@ -4,7 +4,6 @@ go 1.22.3
 
 require (
 	github.com/joho/godotenv v1.5.1
-	github.com/pkg/errors v0.9.1
 	github.com/wwqdrh/gokit/logger v0.0.0-20240610005355-fe9ce6600c3a
 	golang.org/x/net v0.30.0
 )

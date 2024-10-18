@@ -39,6 +39,8 @@ github.com/stretchr/testify v1.7.1 h1:5TQK59W5E3v0r2duFAb7P95B6hEeOyEnHRa8MjYSMT
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/wwqdrh/gokit/logger v0.0.0-20240610005355-fe9ce6600c3a h1:ACzB6v5kQugqWrCMW07aqf3nIYwJZqk+Hmd0ZR9DLms=
 github.com/wwqdrh/gokit/logger v0.0.0-20240610005355-fe9ce6600c3a/go.mod h1:WuKsikA3Vizn9rKUt67j2DJgp3Jrny8nkrgHs1LDQZA=
+github.com/wwqdrh/webdav v0.0.0-20241018023559-9350f535a3e5 h1:trAmiiMtd1ooB2IaTBz3rifpa0nI7PC2vxQGAphviw0=
+github.com/wwqdrh/webdav v0.0.0-20241018023559-9350f535a3e5/go.mod h1:g0tvK2VKNFmUepD22MRDV0grZjctPC7wpD9fQm7I+ms=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 go.uber.org/atomic v1.7.0/go.mod h1:fEN4uk6kAWBTFdckzkM89CLk9XfWZrxpCo0nPH17wJc=
 go.uber.org/atomic v1.9.0 h1:ECmE8Bn/WFTYwEW/bpKD3M8VtR/zQVbavAoalC1PYyE=
