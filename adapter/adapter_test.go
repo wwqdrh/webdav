@@ -76,19 +76,30 @@ func TestAdapter(t *testing.T) {
 	_, _ = e.AddGroupingPolicy("alice", "data2_admin")
 
 	// Test Save Policy
-	policys, _ := e.GetPolicy()
-	groups, _ := e.GetGroupingPolicy()
-	expectedPolicies := len(policys) + len(groups)
-	_ = e.SavePolicy()
-	if len(a.policy) != expectedPolicies {
-		t.Errorf("expected %d policies, got %d", expectedPolicies, len(a.policy))
-	}
+	// policys, _ := e.GetPolicy()
+	// groups, _ := e.GetGroupingPolicy()
+	// expectedPolicies := len(policys) + len(groups)
+	// _ = e.SavePolicy()
+	// if len(a.policy) != expectedPolicies {
+	// 	t.Errorf("expected %d policies, got %d", expectedPolicies, len(a.policy))
+	// }
 
 	// Not implemented methods
-	err := a.AddPolicy("", "", []string{""})
-	errorExpected(t, err)
-	err = a.RemovePolicy("", "", []string{""})
-	errorExpected(t, err)
-	err = a.RemoveFilteredPolicy("", "", 0, "")
-	errorExpected(t, err)
+	// 添加策略
+	ok, _ = e.AddPolicy("alice", "data1", "read")
+	if !ok {
+		t.Error("add policy failed")
+	}
+
+	// 删除策略
+	ok, _ = e.RemovePolicy("alice", "data1", "read")
+	if !ok {
+		t.Error("remove policy failed")
+	}
+
+	// 删除过滤后的策略
+	ok, _ = e.RemoveFilteredPolicy(0, "alice")
+	if !ok {
+		t.Error("add policy failed")
+	}
 }

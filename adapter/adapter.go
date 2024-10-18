@@ -17,7 +17,6 @@ package adapter
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 
 	"github.com/casbin/casbin/v2/model"
 	"github.com/casbin/casbin/v2/persist"
@@ -48,7 +47,7 @@ type Adapter struct {
 
 // NewAdapter is the constructor for Adapter.
 // source是当url不存在时的默认值
-func NewAdapter(driver driver.IDriver, url string, source []byte, force bool) *Adapter {
+func NewAdapter(driver driver.IDriver, url string, source []byte, force bool) persist.Adapter {
 	a := Adapter{
 		dataurl: url,
 		driver:  driver,
@@ -190,15 +189,84 @@ func (a *Adapter) SavePolicy(model model.Model) error {
 
 // AddPolicy adds a policy rule to the storage.
 func (a *Adapter) AddPolicy(sec string, ptype string, rule []string) error {
-	return errors.New("not implemented")
+	line := savePolicyLine(ptype, rule)
+	a.policy = append(a.policy, line)
+	return a.saveToBuffer()
 }
 
 // RemovePolicy removes a policy rule from the storage.
 func (a *Adapter) RemovePolicy(sec string, ptype string, rule []string) error {
-	return errors.New("not implemented")
+	diff := max(0, 6-len(rule))
+	for i := 0; i < diff; i++ {
+		rule = append(rule, "")
+	}
+	for i, line := range a.policy {
+		if line.PType == ptype &&
+			line.V0 == rule[0] &&
+			line.V1 == rule[1] &&
+			line.V2 == rule[2] &&
+			line.V3 == rule[3] &&
+			line.V4 == rule[4] &&
+			line.V5 == rule[5] {
+			a.policy = append(a.policy[:i], a.policy[i+1:]...)
+			return a.saveToBuffer()
+		}
+	}
+	return nil
 }
 
 // RemoveFilteredPolicy removes policy rules that match the filter from the storage.
 func (a *Adapter) RemoveFilteredPolicy(sec string, ptype string, fieldIndex int, fieldValues ...string) error {
-	return errors.New("not implemented")
+	var newPolicy []CasbinRule
+	for _, line := range a.policy {
+		if line.PType != ptype {
+			newPolicy = append(newPolicy, line)
+			continue
+		}
+
+		matched := true
+		for i, fieldValue := range fieldValues {
+			if fieldValue == "" {
+				continue
+			}
+
+			switch fieldIndex + i {
+			case 0:
+				if line.V0 != fieldValue {
+					matched = false
+				}
+			case 1:
+				if line.V1 != fieldValue {
+					matched = false
+				}
+			case 2:
+				if line.V2 != fieldValue {
+					matched = false
+				}
+			case 3:
+				if line.V3 != fieldValue {
+					matched = false
+				}
+			case 4:
+				if line.V4 != fieldValue {
+					matched = false
+				}
+			case 5:
+				if line.V5 != fieldValue {
+					matched = false
+				}
+			}
+
+			if !matched {
+				break
+			}
+		}
+
+		if !matched {
+			newPolicy = append(newPolicy, line)
+		}
+	}
+
+	a.policy = newPolicy
+	return a.saveToBuffer()
 }
